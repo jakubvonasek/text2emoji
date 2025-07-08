@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>text2emoji - Semantic Model</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .input-group { margin: 20px 0; }
+        input[type="text"] { width: 100%; padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; background: #28a745; color: white; border: none; cursor: pointer; }
+        .result { margin: 20px 0; font-size: 24px; }
+        .scores { margin-top: 10px; font-size: 14px; }
+        .model-info { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>text2emoji - Semantic Model</h1>
+    
+    <div class="model-info">
+        <h3>semantic embedding model</h3>
+        <p>uses bert embeddings and emoji-to-text parsing for better generalization</p>
+    </div>
+    
+    <div class="input-group">
+        <input type="text" id="textInput" placeholder="enter text here..." />
+        <button onclick="predict()">predict emoji</button>
+    </div>
+    <div id="result" class="result"></div>
+    <div id="scores" class="scores"></div>
+
+    <script>
+        async function predict() {
+            const text = document.getElementById('textInput').value;
+            if (!text) return;
+            
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text })
+            });
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                document.getElementById('result').innerHTML = `error: ${data.error}`;
+                return;
+            }
+            
+            document.getElementById('result').innerHTML = `prediction: ${data.prediction}`;
+            
+            let scoresHtml = '<h3>top predictions:</h3>';
+            for (const [emoji, score] of Object.entries(data.scores)) {
+                scoresHtml += `<div>${emoji}: ${score.toFixed(3)}</div>`;
+            }
+            document.getElementById('scores').innerHTML = scoresHtml;
+        }
+        
+        // allow enter key
+        document.getElementById('textInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') predict();
+        });
+    </script>
+</body>
+</html> 

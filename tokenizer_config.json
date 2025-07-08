@@ -1,0 +1,17 @@
+{
+  "model_type": "bert",
+  "do_lower_case": true,
+  "do_basic_tokenize": true,
+  "never_split": null,
+  "unk_token": "[UNK]",
+  "sep_token": "[SEP]",
+  "pad_token": "[PAD]",
+  "cls_token": "[CLS]",
+  "mask_token": "[MASK]",
+  "tokenize_chinese_chars": true,
+  "strip_accents": null,
+  "model_max_length": 512,
+  "pad_to_multiple_of": null,
+  "truncation_side": "right",
+  "model_input_names": ["input_ids", "attention_mask"]
+} 

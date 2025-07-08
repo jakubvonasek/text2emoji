@@ -1,0 +1,8 @@
+{
+  "model_type": "text2emoji",
+  "architectures": ["Text2EmojiModel"],
+  "base_model": "bert-base-uncased",
+  "emoji_count": 73,
+  "max_length": 512,
+  "embedding_dim": 768
+} 
